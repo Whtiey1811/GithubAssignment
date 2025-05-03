@@ -1,30 +1,22 @@
 pipeline {
     agent any
-
     stages {
         stage('Checkout') {
             steps {
-                // Checkout code from GitHub
+                // Checkout the code from the GitHub repository
                 git 'https://github.com/Whtiey1811/GithubAssignment'
             }
         }
-        
         stage('Build') {
             steps {
-                // Run Makefile
-                script {
-                    if (isUnix()) {
-                        sh 'make'  // For Linux or Unix systems
-                    } else {
-                        bat 'make' // For Windows systems
-                    }
-                }
+                // Run the Makefile to build the C++ project
+                bat 'make'
             }
         }
-
         stage('Test') {
             steps {
-                // Add test commands if needed
+                // Add any testing steps here (optional for C++ project)
+                echo 'Running tests...'
             }
         }
     }
