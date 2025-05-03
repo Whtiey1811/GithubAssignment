@@ -1,0 +1,17 @@
+# Ignore build artifacts
+/build/
+/bin/
+/out/
+
+# Ignore IDE files
+*.idea/
+*.vscode/
+
+# Ignore temporary files
+*.log
+*.tmp
+
+# Ignore compiled files
+*.o
+*.exe
+*.class
