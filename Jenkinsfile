@@ -1,59 +1,31 @@
 pipeline {
     agent any
 
-    environment {
-        GIT_REPO = 'https://github.com/yourusername/your-repo-name.git' // Replace with your GitHub repo URL
-    }
-
     stages {
         stage('Checkout') {
             steps {
-                git branch: 'main', url: "${GIT_REPO}"
+                // Checkout code from GitHub
+                git 'https://github.com/Whtiey1811/GithubAssignment'
             }
         }
-
-        stage('Install Dependencies') {
-            steps {
-                script {
-                    // Install gcc and make on the agent if not installed already
-                    sh '''
-                    sudo apt update
-                    sudo apt install -y g++ make
-                    sudo apt install -y libtinyxml2.6.2v5 libtinyxml2-dev
-                    '''
-                }
-            }
-        }
-
+        
         stage('Build') {
             steps {
+                // Run Makefile
                 script {
-                    // Run the make command to compile the code
-                    sh 'make'
+                    if (isUnix()) {
+                        sh 'make'  // For Linux or Unix systems
+                    } else {
+                        bat 'make' // For Windows systems
+                    }
                 }
             }
         }
 
-        stage('Run') {
+        stage('Test') {
             steps {
-                script {
-                    // Assuming the XML file is available in the same directory
-                    sh './xml_parser catalog.xml'
-                }
+                // Add test commands if needed
             }
-        }
-
-        stage('Clean') {
-            steps {
-                // Clean the build artifacts
-                sh 'make clean'
-            }
-        }
-    }
-
-    post {
-        always {
-            // Actions to take after the pipeline runs (e.g., email notifications, etc.)
         }
     }
 }
