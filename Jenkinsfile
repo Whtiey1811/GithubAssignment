@@ -21,10 +21,10 @@ pipeline {
         }
         stage('Upload to Nexus') {
             steps {
-                withCredentials([usernamePassword(credentialsId: 'nexus-creds', passwordVariable: 'NEXUS_PASSWORD', usernameVariable: 'NEXUS_USERNAME')]) {
-                    sh '''
-                        curl -u $NEXUS_USERNAME:$NEXUS_PASSWORD --upload-file target/your-artifact-name.jar http://localhost:8081/#browse/browse:cpp-artifacts
-                    '''
+                sh """
+                    curl -u ${NEXUS_USERNAME}:${NEXUS_PASSWORD} --upload-file target/myprogram.exe \
+                        ${NEXUS_URL}/repository/${NEXUS_REPO}/myprogram.exe
+                        """
                 }
 
             }
