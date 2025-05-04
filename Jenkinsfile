@@ -2,7 +2,6 @@ pipeline {
     agent any
     
     environment {
-        // Define paths for Windows
         NEXUS_URL = 'http://localhost:8081/repository/cpp-artifacts/'
         NEXUS_CREDENTIALS = credentials('nexus-creds') // Jenkins Nexus credentials
     }
@@ -17,8 +16,7 @@ pipeline {
         stage('Build') {
             steps {
                 script {
-                    // Ensure you're using the right make tool for Windows (MinGW, Cygwin, etc.)
-                    bat 'make'  // Use 'bat' command for Windows
+                    bat 'make' 
                 }
             }
         }
@@ -26,7 +24,6 @@ pipeline {
         stage('Publish Artifact') {
             steps {
                 script {
-                    // If you're using Maven, you can configure it for Windows paths here:
                     bat 'mvn deploy -DrepositoryId=nexus -Durl=http://localhost:8081/repository/cpp-artifacts/'
                 }
             }
