@@ -1,8 +1,7 @@
 pipeline {
     agent any
     environment {
-        // Nexus credentials (configured in Jenkins as 'nexus-creds')
-        NEXUS_CREDS = credentials('nexus-creds')
+        NEXUS_CREDS = credentials('nexus-creds')  // Use your configured ID in Jenkins
         NEXUS_URL = 'http://localhost:8081/repository/cpp-artifacts'
     }
     stages {
@@ -12,32 +11,27 @@ pipeline {
                 git 'https://github.com/Whtiey1811/GithubAssignment'
             }
         }
-
         stage('Build') {
             steps {
                 echo "Running make command"
-                bat 'dir'  // Show files before build
-                bat 'make' // Build parsexml.exe
-                echo "Build complete, listing output"
-                bat 'dir'
+                bat 'dir'             // Shows current directory (for debug)
+                bat 'make'            // Builds target/myprogram.exe
+                echo "Build completed"
+                bat 'dir target'      // Show contents of target folder
             }
         }
-
         stage('Test') {
             steps {
-                echo 'Running tests...'
-                bat 'parsexml.exe catalog.xml'
+                echo 'Running tests... (none implemented)'
             }
         }
-
         stage('Upload to Nexus') {
             steps {
-                echo "Uploading parsexml.exe to Nexus"
-                // Ensure the file is present and then upload
-                bat '''
-                curl -v -u %NEXUS_CREDS_USR%:%NEXUS_CREDS_PSW% --upload-file parsexml.exe ^
-                %NEXUS_URL%/parsexml.exe
-                '''
+                echo "Uploading build to Nexus"
+                sh """
+                    curl -v -u ${NEXUS_CREDS_USR}:${NEXUS_CREDS_PSW} --upload-file target/myprogram.exe \
+                    ${NEXUS_URL}/myprogram.exe
+                """
             }
         }
     }
