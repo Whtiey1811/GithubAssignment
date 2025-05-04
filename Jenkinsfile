@@ -19,6 +19,14 @@ pipeline {
                 echo 'Running tests...'
             }
         }
+        stage('Upload to Nexus') {
+            steps {
+                withCredentials([usernamePassword(credentialsId: 'YOUR_CREDENTIALS_ID', usernameVariable: 'NEXUS_USER', passwordVariable: 'NEXUS_PASS')]) {
+                    bat '''
+                        curl -u %NEXUS_USER%:%NEXUS_PASS% --upload-file myprogram.exe http://localhost:8081/repository/cpp-artifacts/myprogram.exe
+                    '''
+                }
+            }
+        }
     }
 }
-
