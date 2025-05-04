@@ -10,12 +10,14 @@ pipeline {
             steps {
                 echo "Checking out the repository"
                 git 'https://github.com/Whtiey1811/GithubAssignment'
+                sh 'echo "This is the Checkout stage!"'  // Debugging step
             }
         }
         stage('Build') {
             steps {
                 echo "Building the project using 'make'"
-                bat 'make'  // Adjust this to your build process, e.g., 'make' or 'msbuild'
+                sh 'echo "This is the Build stage!"'  // Debugging step
+                bat 'make'  // Adjust this to your build process
             }
         }
         stage('Test') {
