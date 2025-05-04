@@ -1,10 +1,8 @@
 pipeline {
     agent any
     environment {
-        NEXUS_USERNAME = credentials('nexus-creds')
-        NEXUS_PASSWORD = credentials('nexus-creds')
-        NEXUS_URL = 'http://localhost:8081'
-        NEXUS_REPO = 'cpp-artifacts'
+        NEXUS_CREDS = credentials('nexus-creds')
+        NEXUS_URL = 'http://localhost:8081/repository/cpp-artifacts/'
     }
     stages {
         stage('Checkout') {
@@ -19,16 +17,22 @@ pipeline {
         }
         stage('Test') {
             steps {
+                // Add any testing steps here (optional for C++ project)
                 echo 'Running tests...'
-                bat 'parsexml.exe catalog.xml'
             }
         }
         stage('Upload to Nexus') {
             steps {
-                bat """
-                    curl -u %NEXUS_USERNAME%:%NEXUS_PASSWORD% --upload-file parsexml.exe ^
-                        %NEXUS_URL%/repository/%NEXUS_REPO%/parsexml.exe
-                """
+                script {
+
+                    def nexusUsername = NEXUS_CREDS_USR
+                    def nexusPassword = NEXUS_CREDS_PSW
+
+                    sh """
+                        curl -u ${nexusUsername}:${nexusPassword} --upload-file target/myprogram.exe \
+                            ${NEXUS_URL}/myprogram.exe
+                    """
+                }
             }
         }
     }
