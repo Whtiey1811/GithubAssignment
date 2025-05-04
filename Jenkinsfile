@@ -45,4 +45,15 @@ pipeline {
             }
         }
     }
+    post {
+        always {
+            echo 'Pipeline has finished running'
+        }
+        success {
+            echo 'Build and upload successful'
+        }
+        failure {
+            echo 'Build or upload failed'
+        }
+    }
 }
