@@ -14,8 +14,11 @@ pipeline {
         }
         stage('Build') {
             steps {
+                echo "Printing current working directory"
+                bat 'cd'
+                echo "Checking if make is available"
+                bat 'make --version'
                 echo "Running make command"
-                bat 'dir'  // Check the directory contents before running make
                 bat 'make'  // Run make to build the project
                 echo "Listing directory contents after make"
                 bat 'dir'  // Check the directory contents after running make
