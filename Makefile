@@ -1,14 +1,14 @@
 CC = g++
-CFLAGS = -Wall
+CFLAGS = -Wall -std=c++11
 LIBS = -ltinyxml2
-TARGET = target/myprogram.exe
-SRC = parsexml.cpp
+TARGET = parsexml.exe
+SRC = main.cpp parsexml.cpp
+OBJ = $(SRC:.cpp=.o)
+$(TARGET): $(OBJ)
+	$(CC) $(OBJ) -o $(TARGET) $(LIBS)
 
-all: $(TARGET)
-
-$(TARGET): $(SRC)
-	@mkdir -p target
-	$(CC) $(CFLAGS) -o $(TARGET) $(SRC) $(LIBS)
+%.o: %.cpp
+	$(CC) $(CFLAGS) -c $< -o $@
 
 clean:
-	rm -f target/myprogram.exe
+	rm -f $(OBJ) $(TARGET)
