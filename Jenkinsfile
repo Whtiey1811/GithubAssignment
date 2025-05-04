@@ -17,7 +17,7 @@ pipeline {
         }
         stage('Test') {
             steps {
-                // Add any testing steps here (optional for C++ project)
+
                 echo 'Running tests...'
             }
         }
